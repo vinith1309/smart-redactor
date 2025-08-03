@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Redactor Demo</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    input { margin: 1rem; }
+    img { max-width: 80%; margin-top: 2rem; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>🛡️ Smart Redactor (Demo)</h1>
+  <input type="file" id="upload" accept="image/*">
+  <button onclick="upload()">Redact Image</button>
+  <div id="output"></div>
+
+  <script>
+    async function upload() {
+      const file = document.getElementById('upload').files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch('https://YOUR-BACKEND-URL/redact', {
+        method: "POST",
+        body: formData
+      });
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      document.getElementById("output").innerHTML = `<h3>Redacted Output</h3><img src="${url}">`;
+    }
+  </script>
+</body>
+</html>
